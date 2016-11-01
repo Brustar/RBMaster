@@ -1,4 +1,4 @@
-RPGame
+RBMaster
 ======
 
-cocos2d-x lua实现的战斗场景
+中控主机控制程序
