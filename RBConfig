@@ -1,0 +1,7 @@
+[current]
+cloudip = 115.28.151.85
+cloudport = 8000
+
+[C4]
+C4ip = 192.168.199.228
+C4port = 5020
