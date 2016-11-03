@@ -3,7 +3,6 @@ import sys
 import time
 import binascii
 import logging
-import logging.config
 
 class RBClient(object):
 	def __init__(self,ip,port):

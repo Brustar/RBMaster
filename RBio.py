@@ -12,4 +12,3 @@ class RBio(object):
 	def writeProperty(self,key,value,section="current"):
 		self.cf.set(section, key, value)
 		self.cf.write(open(self.confPath, "w"))
-		

@@ -1,11 +1,13 @@
 from biplist import *
+import logging
 
 class Plist(object):
 	def __init__(self,plistPath):
 		try:
 			self.plist = readPlist(plistPath)
 		except (InvalidPlistException, NotBinaryPlistException), e:
-    			print "Not a plist:", e
+				logger = logging.getLogger("client")
+				logger.error("Not a plist:", e)
 		
 
 	def property(self,key):

@@ -5,6 +5,7 @@
 
 import sqlite3
 import os
+import logging
 
 '''SQLite数据库是一款非常小巧的嵌入式开源数据库软件，也就是说
 没有独立的维护进程，所有的维护都来自于程序本身。
@@ -56,13 +57,14 @@ class RBSqlite(object):
         连接对象'''
 
     def __init__(self,path):
+        self.logger = logging.getLogger("client")
         conn = sqlite3.connect(path)
         if os.path.exists(path) and os.path.isfile(path):
-            print('硬盘上面:[{}]'.format(path))
+            self.logger.info('硬盘上面:[{}]'.format(path))
             self.conn = conn
         else:
             conn = None
-            print('内存上面:[:memory:]')
+            self.logger.info('内存上面:[:memory:]')
             self.conn = sqlite3.connect(':memory:')
 
     '''该方法是获取数据库的游标对象，参数为数据库的连接对象
@@ -86,23 +88,23 @@ class RBSqlite(object):
             cu = self.get_cursor()
             cu.execute(sql)
             self.conn.commit()
-            print('删除数据库表[{}]成功!'.format(table))
+            self.logger.info('删除数据库表[{}]成功!'.format(table))
             self.close_all(cu)
         else:
-            print('the [{}] is empty or equal None!'.format(sql))
+            self.logger.info('the [{}] is empty or equal None!'.format(sql))
 
     '''创建数据库表：'''
     def create_table(self, sql):
         if sql is not None and sql != '':
             cu = self.get_cursor()
             if SHOW_SQL:
-                print('执行sql:[{}]'.format(sql))
+                self.logger.info('执行sql:[{}]'.format(sql))
             cu.execute(sql)
             self.conn.commit()
-            print('创建数据库表[%s]成功!' % TABLE_NAME)
+            self.logger.info('创建数据库表[%s]成功!' % TABLE_NAME)
             self.close_all(cu)
         else:
-            print('the [{}] is empty or equal None!'.format(sql))
+            self.logger.info('the [{}] is empty or equal None!'.format(sql))
 
     def close_all(self, cu):
         '''关闭数据库游标对象和数据库连接对象'''
@@ -116,12 +118,12 @@ class RBSqlite(object):
                 cu = self.get_cursor()
                 for d in data:
                     if SHOW_SQL:
-                        print('执行sql:[{}],参数:[{}]'.format(sql, d))
+                        self.logger.info('执行sql:[{}],参数:[{}]'.format(sql, d))
                     cu.execute(sql, d)
                     self.conn.commit()
                 self.close_all(cu)
         else:
-            print('the [{}] is empty or equal None!'.format(sql))
+            self.logger.info('the [{}] is empty or equal None!'.format(sql))
 
 
     def fetchall(self, sql):
@@ -129,14 +131,14 @@ class RBSqlite(object):
         if sql is not None and sql != '':
             cu = self.get_cursor()
             if SHOW_SQL:
-                print('执行sql:[{}]'.format(sql))
+                self.logger.info('执行sql:[{}]'.format(sql))
             cu.execute(sql)
             r = cu.fetchall()
             if len(r) > 0:
                 for e in range(len(r)):
-                    print(r[e])
+                    self.logger.info(r[e])
         else:
-            print('the [{}] is empty or equal None!'.format(sql))
+            self.logger.info('the [{}] is empty or equal None!'.format(sql))
 
 
     def fetchone(self, sql, data):
@@ -147,16 +149,16 @@ class RBSqlite(object):
                 d = (data,)
                 cu = self.get_cursor()
                 if SHOW_SQL:
-                    print('执行sql:[{}],参数:[{}]'.format(sql, data))
+                    self.logger.info('执行sql:[{}],参数:[{}]'.format(sql, data))
                 cu.execute(sql, d)
                 r = cu.fetchall()
                 if len(r) > 0:
                     for e in range(len(r)):
-                        print(r[e])
+                        self.logger.info(r[e])
             else:
-                print('the [{}] equal None!'.format(data))
+                self.logger.info('the [{}] equal None!'.format(data))
         else:
-            print('the [{}] is empty or equal None!'.format(sql))
+            self.logger.info('the [{}] is empty or equal None!'.format(sql))
 
 
     def update(self, sql, data):
@@ -166,12 +168,12 @@ class RBSqlite(object):
                 cu = self.get_cursor()
                 for d in data:
                     if SHOW_SQL:
-                        print('执行sql:[{}],参数:[{}]'.format(sql, d))
+                        self.logger.info('执行sql:[{}],参数:[{}]'.format(sql, d))
                     cu.execute(sql, d)
                     self.conn.commit()
                 self.close_all(cu)
         else:
-            print('the [{}] is empty or equal None!'.format(sql))
+            self.logger.info('the [{}] is empty or equal None!'.format(sql))
 
 
     def delete(self, sql, data):
@@ -181,12 +183,12 @@ class RBSqlite(object):
                 cu = self.get_cursor()
                 for d in data:
                     if SHOW_SQL:
-                        print('执行sql:[{}],参数:[{}]'.format(sql, d))
+                        self.logger.info('执行sql:[{}],参数:[{}]'.format(sql, d))
                     cu.execute(sql, d)
                     self.conn.commit()
                 self.close_all(cu)
         else:
-            print('the [{}] is empty or equal None!'.format(sql))
+            self.logger.info('the [{}] is empty or equal None!'.format(sql))
 
 '''
 if __name__ == '__main__':
