@@ -2,6 +2,8 @@ import socket
 import sys
 import time
 import binascii
+import logging
+import logging.config
 
 class RBClient(object):
 	def __init__(self,ip,port):
@@ -12,7 +14,7 @@ class RBClient(object):
 		server_address = (ip, port)
 		self.logger = logging.getLogger("client")
 
-		logger.info('connecting to %s port %s' % server_address)
+		self.logger.info('connecting to %s port %s' % server_address)
 		self.sock.connect(server_address)
 
 	def sendData(self,message):
@@ -30,7 +32,7 @@ class RBClient(object):
 					break   
 
 			except:  
-				self.logger('error.')
+				self.logger.error('error.')
 				break  
 
 		self.close()

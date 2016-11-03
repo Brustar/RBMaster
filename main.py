@@ -6,6 +6,7 @@ from Protocol import *
 from RBio import *
 import logging
 import logging.config
+import os
 
 def callback(data):
 	logger = logging.getLogger("main")
@@ -23,10 +24,14 @@ def callback(data):
 	
 
 if __name__ == '__main__':
-	logging.config.fileConfig("logger.conf")
-
-	'''
-	conf=RBio("RBConfig")
+	#当前脚本目录
+	scriptPath = os.path.split(os.path.realpath(sys.argv[0]))[0]
+	logPath = os.path.join(scriptPath,'logger.conf')
+	print logPath
+	logging.config.fileConfig(logPath)
+	
+	configPath= os.path.join(scriptPath,'RBConfig')
+	conf=RBio(configPath)
 	ip = conf.getProperty("cloudIP")
 	port = conf.getProperty("cloudPort")
 	
@@ -35,4 +40,3 @@ if __name__ == '__main__':
 	protocol=Protocol(0x82,0x00ff);
 	client.sendData(protocol.command())
 	client.recvData(callback)
-	'''
