@@ -10,7 +10,9 @@ class RBClient(object):
 		self.bufsize = 1024
 		# Connect the socket to the port on the server given by the caller
 		server_address = (ip, port)
-		print >>sys.stderr, 'connecting to %s port %s' % server_address
+		self.logger = logging.getLogger("client")
+
+		logger.info('connecting to %s port %s' % server_address)
 		self.sock.connect(server_address)
 
 	def sendData(self,message):
@@ -28,7 +30,7 @@ class RBClient(object):
 					break   
 
 			except:  
-				print 'error.'
+				self.logger('error.')
 				break  
 
 		self.close()

@@ -4,10 +4,13 @@
 from RBClient import *
 from Protocol import *
 from RBio import *
+import logging
+import logging.config
 
 def callback(data):
+	logger = logging.getLogger("main")
 	pro=Protocol.decode(data)
-	print "recv: cmd= %2x,masterID = %4x,state = %2x,R=%2x,G=%2x,B=%2x,deviceID=%4x,deviceType=%2x" %(pro.cmd,pro.masterID,pro.state,pro.R,pro.G,pro.B,pro.deviceID,pro.deviceType)
+	logger.debug("recv: cmd= %2x,masterID = %4x,state = %2x,R=%2x,G=%2x,B=%2x,deviceID=%4x,deviceType=%2x" %(pro.cmd,pro.masterID,pro.state,pro.R,pro.G,pro.B,pro.deviceID,pro.deviceType))
 	
 	if(pro.head!=0xEC or pro.tail!=0xEA):
 		return
@@ -20,7 +23,9 @@ def callback(data):
 	
 
 if __name__ == '__main__':
-	#client = RBClient('localhost',8080)
+	logging.config.fileConfig("logger.conf")
+
+	'''
 	conf=RBio("RBConfig")
 	ip = conf.getProperty("cloudIP")
 	port = conf.getProperty("cloudPort")
@@ -30,3 +35,4 @@ if __name__ == '__main__':
 	protocol=Protocol(0x82,0x00ff);
 	client.sendData(protocol.command())
 	client.recvData(callback)
+	'''
