@@ -29,7 +29,6 @@ if __name__ == '__main__':
 	logPath = os.path.join(scriptPath,'logger.conf')
 	print logPath
 	logging.config.fileConfig(logPath)
-	'''
 	configPath= os.path.join(scriptPath,'RBConfig')
 	conf=RBio(configPath)
 	ip = conf.getProperty("cloudIP")
@@ -37,7 +36,6 @@ if __name__ == '__main__':
 	
 	#conf.writeProperty("abc",123)
 	client = RBClient(ip,int(port))
-	protocol=Protocol(0x82,0x00ff);
+	protocol=Protocol(0x82,0x00ff)
 	client.sendData(protocol.command())
 	client.recvData(callback)
-	'''
