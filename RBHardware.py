@@ -1,7 +1,7 @@
 import serial
 from time import sleep
 
-class RBHardware:
+class RBHardware(object):
 	def __init__(self):
 		self.serial = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.5)
 

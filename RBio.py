@@ -1,6 +1,6 @@
 import ConfigParser
 
-class RBio:
+class RBio(object):
 	def __init__(self,filePath):
 		self.confPath=filePath
 		self.cf = ConfigParser.ConfigParser()

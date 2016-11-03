@@ -49,7 +49,7 @@ TABLE_NAME = 'devices'
 SHOW_SQL = True
 
 
-class RBSqlite:
+class RBSqlite(object):
     '''获取到数据库的连接对象，参数为数据库文件的绝对路径
         如果传递的参数是存在，并且是文件，那么就返回硬盘上面改
         路径下的数据库文件的连接对象；否则，返回内存中的数据接

@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 
 BUFFER_SIZE = 8192
 
-class Light:
+class C4Light(object):
 	def __init__(self,ip,port):
 		self.ip = ip
 		self.port = int(port)
@@ -92,5 +92,5 @@ class Light:
 		self.setLevel(id, 1)
 		
 #if __name__ == '__main__':
-	#light = Light('192.168.199.228',5020)
+	#light = C4Light('192.168.199.228',5020)
 	#light.powerOff(63)

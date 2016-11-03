@@ -3,7 +3,7 @@ import sys
 import time
 import binascii
 
-class RBClient:
+class RBClient(object):
 	def __init__(self,ip,port):
 		# Create a TCP/IP socket
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
