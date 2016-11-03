@@ -25,7 +25,7 @@ def callback(data):
 	
 
 if __name__ == '__main__':
-	UdpClient().sendnow()
+	#UdpClient().sendnow()
 	#当前脚本目录
 	scriptPath = os.path.split(os.path.realpath(sys.argv[0]))[0]
 	logPath = os.path.join(scriptPath,'logger.conf')
