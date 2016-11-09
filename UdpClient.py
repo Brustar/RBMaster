@@ -2,7 +2,7 @@ from socket import *
 import time
  
 HOST = '<broadcast>'  
-PORT = 40000
+PORT = 10000
 BUFSIZE = 1024  
 ADDR = (HOST, PORT)  
 
