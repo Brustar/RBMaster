@@ -5,6 +5,7 @@ from RBClient import *
 from Protocol import *
 from UdpClient import *
 from RBio import *
+from RBNetwork import *
 import logging
 import logging.config
 import os
@@ -45,7 +46,7 @@ def connect(ip, port):
     client.recvData(callback)
 
 
-if __name__ == '__main__':
+def main():
     threads = []
     t1 = threading.Thread(target=broadcast)
     threads.append(t1)
@@ -69,3 +70,6 @@ if __name__ == '__main__':
         t.start()
 
     t.join()
+
+if __name__ == '__main__':
+    RBNetwork().check(main)
