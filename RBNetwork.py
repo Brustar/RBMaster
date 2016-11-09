@@ -2,10 +2,15 @@ import os
 import re
 import time
 import logging
+import platform
 
 class RBNetwork(object):
     def readip(self):
-        info = os.popen('ifconfig en0')
+        cmd='ifconfig en0'
+        sysstr = platform.system()
+        if sysstr == "Linux":
+            cmd='ifconfig wlan0'
+        info = os.popen(cmd)
         pattern = '((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))'
         ip = re.search(pattern,info.read())
         if ip:
