@@ -9,23 +9,31 @@ import logging
 import logging.config
 import os
 
+MASTER_AUTHOR = 0x22
+SUB_AUTHOR = 0x23
+
 def callback(data):
 	logger = logging.getLogger("main")
+	logger.info('recv from server : %s' % binascii.b2a_hex(data))
 	pro=Protocol.decode(data)
-	logger.debug("recv: cmd= %2x,masterID = %4x,state = %2x,R=%2x,G=%2x,B=%2x,deviceID=%4x,deviceType=%2x" %(pro.cmd,pro.masterID,pro.state,pro.R,pro.G,pro.B,pro.deviceID,pro.deviceType))
-	
+
 	if(pro.head!=0xEC or pro.tail!=0xEA):
 		return
-
-	if(pro.cmd==0x82):
+	#服务器认证
+	if(pro.cmd==MASTER_AUTHOR):
 		ip= "%d.%d.%d.%d" % (pro.state,pro.R,pro.G,pro.B)
 		port=pro.deviceID
 		client = RBClient(ip,port)
-		client.sendData('aaaa')
+		protocol = Protocol(SUB_AUTHOR, 0x00A8)
+		client.sendData(protocol.command())
+		client.recvData(callback)
+	#控制设备
+	if(pro.cmd==0x03):
+		pass
 	
 
 if __name__ == '__main__':
-	#UdpClient().sendnow()
+	#UdpClient().broadcast()
 	#当前脚本目录
 	scriptPath = os.path.split(os.path.realpath(sys.argv[0]))[0]
 	logPath = os.path.join(scriptPath,'logger.conf')
@@ -38,6 +46,6 @@ if __name__ == '__main__':
 	
 	#conf.writeProperty("abc",123)
 	client = RBClient(ip,int(port))
-	protocol=Protocol(0x82,0x00ff)
+	protocol=Protocol(MASTER_AUTHOR,0x00A8)
 	client.sendData(protocol.command())
 	client.recvData(callback)

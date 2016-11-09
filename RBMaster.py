@@ -52,7 +52,7 @@ class RBMaster(object):
                 devices.append(device)
         self.rooms=rooms
         self.device=devices
-        return "{'device'=%s,'rooms'=%s}" % (json.dumps(devices),json.dumps(rooms))
+        return '{"device":%s,"rooms":%s}' % (json.dumps(devices),json.dumps(rooms))
 
     def getText(self,soupData,tag):
         tag = soupData.find(tag)

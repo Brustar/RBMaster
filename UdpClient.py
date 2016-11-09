@@ -20,7 +20,7 @@ class UdpClient(object):
 		except socket.error:
 			return "127.0.0.1"
  
-	def sendnow(self): 
+	def broadcast(self): 
 		data = self.ip_address()
 		self.sock = socket(AF_INET, SOCK_DGRAM)
 		self.sock.bind(('', 0))  
@@ -35,5 +35,5 @@ class UdpClient(object):
 
 '''
 if __name__ == '__main__':
-	UdpClient().sendnow()
+	UdpClient().broadcast()
 '''
