@@ -44,15 +44,16 @@ class RBMaster(object):
         devices = []
         for item in items:
             if self.getText(item, "type") == "8":
-                room = (self.getText(item, "id"), self.getText(item, "name"))
+                dict = {'Alice': '2341', 'Beth': '9102', 'Cecil': '3258'}
+                room = {'id':self.getText(item, "id"), 'name':self.getText(item, "name")}
                 rooms.append(room)
 
             if self.getText(item, "type") == "7":
-                device = (self.getText(item, "id"), self.getText(item, "name"))
+                device = {'id':self.getText(item, "id"), 'name':self.getText(item, "name")}
                 devices.append(device)
         self.rooms=rooms
         self.device=devices
-        return '{"device":%s,"rooms":%s}' % (json.dumps(devices),json.dumps(rooms))
+        return json.dumps({'devices':devices,'rooms':rooms})
 
     def getText(self,soupData,tag):
         tag = soupData.find(tag)

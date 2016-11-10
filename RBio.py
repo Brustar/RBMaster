@@ -6,6 +6,9 @@ class RBio(object):
 		self.cf = ConfigParser.ConfigParser()
 		self.cf.read(filePath)
 
+	def hasKey(self,key,section="current"):
+		return self.cf.has_option(section,key)
+
 	def getProperty(self,key,section="current"):
 		return self.cf.get(section, key)
 

@@ -6,6 +6,9 @@ from Protocol import *
 from UdpClient import *
 from RBio import *
 from RBNetwork import *
+from RBHttp import *
+from RBMaster import *
+from C4Light import *
 import logging
 import logging.config
 import os
@@ -27,30 +30,30 @@ def callback(data):
         ip = "%d.%d.%d.%d" % (pro.state, pro.R, pro.G, pro.B)
         port = pro.deviceID
         client = RBClient(ip, port)
-        protocol = Protocol(SUB_AUTHOR, 0x00FF)
+        protocol = Protocol(SUB_AUTHOR, pro.masterID)
         client.sendData(protocol.command())
         client.recvData(callback)
     # 控制设备
     if (pro.cmd == 0x03):
-        pass
-
+        light = C4Light()
+        if pro.state:
+            light.powerOn(pro.deviceID)
+        else:
+            light.powerOff(pro.deviceID)
 
 def broadcast():
     UdpClient().broadcast()
 
 
-def connect(ip, port):
+def connect(ip, port, hostID):
     client = RBClient(ip, port)
-    protocol = Protocol(MASTER_AUTHOR, 0x00FF)
+
+    protocol = Protocol(MASTER_AUTHOR, hostID)
     client.sendData(protocol.command())
     client.recvData(callback)
 
 
 def main():
-    threads = []
-    t1 = threading.Thread(target=broadcast)
-    threads.append(t1)
-
     # 当前脚本目录
     scriptPath = os.path.split(os.path.realpath(sys.argv[0]))[0]
     logPath = os.path.join(scriptPath, 'logger.conf')
@@ -61,8 +64,30 @@ def main():
     ip = conf.getProperty("cloudIP")
     port = int(conf.getProperty("cloudPort"))
 
-    # conf.writeProperty("abc",123)
-    t2 = threading.Thread(target=connect, args=(ip, port))
+    if conf.hasKey("hostID"):
+        hostID = conf.getProperty("hostID")
+    else:
+        host = conf.getProperty("httpHost")
+        httpPort = conf.getProperty("httpPort")
+
+        master = RBMaster()
+        master.ip = conf.getProperty("C4IP", 'C4')
+        master.port = int(conf.getProperty("C4Port", 'C4'))
+        data = master.toJson()
+        url = "http://%s:%s/Cloud/host_config_upload.aspx" % (host, httpPort)
+        param = {'optype': 1, 'jsondata': data}
+        http = RBHttp(url, param)
+        hostID = http.uploadAllMasterInfo()
+        if hostID:
+            conf.writeProperty("hostID", hostID)
+        else:
+            print 'error.'
+            return
+
+    threads = []
+    t1 = threading.Thread(target=broadcast)
+    threads.append(t1)
+    t2 = threading.Thread(target=connect, args=(ip, port, int(hostID,16)))
     threads.append(t2)
 
     for t in threads:

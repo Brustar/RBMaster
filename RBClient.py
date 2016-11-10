@@ -18,7 +18,6 @@ class RBClient(object):
         self.sock.connect(server_address)
 
     def sendData(self, message):
-        self.logger = logging.getLogger("client")
         self.logger.info('send to server : %s' % binascii.b2a_hex(message))
         self.sock.sendall(message)
 

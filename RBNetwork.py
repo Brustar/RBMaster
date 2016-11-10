@@ -32,5 +32,6 @@ def handle():
     print 'ok..'
 
 if __name__ == '__main__':
-    RBNetwork().check(handle)
+    #RBNetwork().check(handle)
+    print RBNetwork().readip()
 '''
