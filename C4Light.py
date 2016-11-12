@@ -28,8 +28,6 @@ class C4Light(object):
 	'''
 	def setLevel(self, id, value):
 		directorConn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		print self.ip
-		print self.port
 		directorConn.connect((self.ip,self.port))
 		MESSAGE = '<c4soap name="SendToDeviceAsync" async="1"><param name="data" type="STRING"><devicecommand><command>SET_LEVEL</command><params><param><name>LEVEL</name><value type="INT"><static>%d</static></value></param></params></devicecommand></param><param name="idDevice" type="INT">%d</param></c4soap>' % (value, id)
 		directorConn.sendall(MESSAGE + "\0")
@@ -48,6 +46,7 @@ class C4Light(object):
 		MESSAGE = '<c4soap name="SendToDeviceAsync" async="1"><param name="data" type="STRING"><devicecommand><command>RAMP_TO_LEVEL</command><params><param><name>TIME</name><value type="INTEGER"><static>%d</static></value></param><param><name>LEVEL</name><value type="PERCENT"><static>%d</static></value></param></params></devicecommand></param><param name="idDevice" type="INT">%d</param></c4soap>' % (time, percent, id)
 		directorConn.sendall(MESSAGE + "\0")
 		directorConn.close()
+ 
     
 	'''
 	Returns the light level for a dimmer. Value between 0 and 100.
@@ -87,14 +86,28 @@ class C4Light(object):
 			self.setLevel(id, 0)
 		else:
 			self.setLevel(id, 1)
+			#self.rampToLevel(id, 50, 3000)
 
 	def powerOff(self, id):
 		if(int(self.getLightState(id).strip('\0'))):
 			self.setLevel(id, 0)
 
 	def powerOn(self, id):
-		self.setLevel(id, 1)
-
-#if __name__ == '__main__':
-	#light = C4Light('192.168.199.228',5020)
-	#light.powerOff(63)
+		if id>63:
+			if(int(self.getLightState(id).strip('\0'))==0):
+				self.rampToLevel(id, 50, 3000)
+		else:
+			self.setLevel(id, 1)
+'''
+if __name__ == '__main__':
+	master = RBMaster()
+	master.ip='192.168.199.228'
+	master.port = 5020
+	light = C4Light()
+	#light.powerOn(63)
+	#light.powerOn(65)
+	#light.powerOn(68)
+	light.powerOff(63)
+	light.powerOff(65)
+	light.powerOff(68)
+'''
