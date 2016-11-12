@@ -3,6 +3,7 @@ import sys
 import time
 import binascii
 import logging
+import traceback
 
 
 class RBClient(object):
@@ -30,9 +31,10 @@ class RBClient(object):
 
                 if not data:
                     break
-
-            except:
-                self.logger.error('error.')
+            except Exception, e:
+                exstr = traceback.format_exc()
+                print exstr
+                self.logger.error('error:%s' % exstr)
                 break
 
         self.close()

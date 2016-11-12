@@ -6,9 +6,10 @@ class RBHttp(object):
 		self.url=url
 		self.param=param
 
-	def uploadAllMasterInfo(self):
+	def uploadInfo(self):
 		r = requests.post(self.url, data=self.param)
-		if r.json()['errortype'] == '0' :
+		print r.json()
+		if r.json()['Errortype'] == '0' :
 			return r.json()['hostid']
 		return None
 

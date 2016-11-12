@@ -28,6 +28,8 @@ class C4Light(object):
 	'''
 	def setLevel(self, id, value):
 		directorConn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		print self.ip
+		print self.port
 		directorConn.connect((self.ip,self.port))
 		MESSAGE = '<c4soap name="SendToDeviceAsync" async="1"><param name="data" type="STRING"><devicecommand><command>SET_LEVEL</command><params><param><name>LEVEL</name><value type="INT"><static>%d</static></value></param></params></devicecommand></param><param name="idDevice" type="INT">%d</param></c4soap>' % (value, id)
 		directorConn.sendall(MESSAGE + "\0")
