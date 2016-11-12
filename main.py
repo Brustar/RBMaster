@@ -33,10 +33,6 @@ class Business(object):
 			protocol = Protocol(SUB_AUTHOR, pro.masterID)
 			self.client.sendData(protocol.command())
         		self.client.recvData(self.callback)
-		if pro.cmd == SUB_AUTHOR:
-			protocol = Protocol(0x03, pro.masterID, state=0x01)
-		        self.client.sendData(protocol.command())
-		        #client.recvData(callback)
 		# 控制设备
 		if (pro.cmd == 0x03):
 			light = C4Light()
