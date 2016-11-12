@@ -21,6 +21,8 @@ class Protocol(object):
 
 	@staticmethod
 	def decode(data):
+		if len(data)>12:
+			data = data[:12]	
 		head,cmd,masterID,state,R,G,B,deviceID,deviceType,tail=struct.unpack(PATTERN,data)
 		pro=Protocol(cmd,masterID,state,R,G,B,deviceID,deviceType)
 		pro.head=head
