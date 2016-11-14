@@ -33,7 +33,6 @@ class RBClient(object):
                     break
             except Exception, e:
                 exstr = traceback.format_exc()
-                print exstr
                 self.logger.error('error:%s' % exstr)
                 break
 

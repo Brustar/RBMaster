@@ -19,8 +19,7 @@ SUB_AUTHOR = 0x23
 
 class Business(object):
 	def callback(self,data):
-		logger = logging.getLogger("main")
-		logger.info('recv from server : %s' % binascii.b2a_hex(data))
+		self.logger.info('recv from server : %s' % binascii.b2a_hex(data))
 		pro = Protocol.decode(data)
 
 		if (pro.head != 0xEC or pro.tail != 0xEA):
@@ -59,6 +58,7 @@ class Business(object):
 		logPath = os.path.join(scriptPath, 'logger.conf')
 
 		logging.config.fileConfig(logPath)
+		self.logger = logging.getLogger("main")
 		configPath = os.path.join(scriptPath, 'RBConfig')
 		conf = RBio(configPath)
 		ip = conf.getProperty("cloudIP")
@@ -82,7 +82,7 @@ class Business(object):
 		        if masterID:
 		        	conf.writeProperty("masterID", masterID)
 		        else:
-				print 'error.'
+				self.logger.error('upload error.')
 				return
 
 		threads = []
