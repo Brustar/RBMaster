@@ -1,4 +1,5 @@
 from socket import *  
+from RBNetwork import *
 import time
  
 HOST = '<broadcast>'  
@@ -9,20 +10,10 @@ ADDR = (HOST, PORT)
 class UdpClient(object):
 	def __init__(self):
 		self.sock = socket(AF_INET, SOCK_DGRAM)
-		
-  
-	def ip_address(self): 
-		try:
-			self.sock.connect(('8.8.8.8', 80))
-			(addr, port) = self.sock.getsockname()
-			return addr
-			self.sock.close()
-		except socket.error:
-			return "127.0.0.1"
  
 	def broadcast(self): 
-		data = self.ip_address()
-		self.sock = socket(AF_INET, SOCK_DGRAM)
+		network = RBNetwork() 
+		data = network.readip()
 		self.sock.bind(('', 0))  
 		self.sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)  
 

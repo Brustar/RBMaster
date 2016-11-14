@@ -31,14 +31,14 @@ class Business(object):
 			self.client = RBClient(ip, port)
 			protocol = Protocol(SUB_AUTHOR, pro.masterID)
 			self.client.sendData(protocol.command())
-        		self.client.recvData(self.callback)
+			self.client.recvData(self.callback)
 		# 控制设备
 		if (pro.cmd == 0x03):
 			light = C4Light()
 			if pro.state:
 				light.powerOn(pro.deviceID)
 			else:
-        			light.powerOff(pro.deviceID)
+				light.powerOff(pro.deviceID)
 
 	def broadcast(self):
 		UdpClient().broadcast()
