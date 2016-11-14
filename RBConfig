@@ -3,7 +3,7 @@ cloudip = 115.28.151.85
 cloudport = 8000
 httphost = 115.28.151.85
 httpport = 8088
-masterid = 8110
+masterid = 8118
 
 [C4]
 c4ip = 192.168.199.228

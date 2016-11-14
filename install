@@ -3,14 +3,11 @@
 cd ~
 git clone https://github.com/Brustar/RBMaster.git
 
-cp ~/RBMaster/ecloud /etc/init.d/ecloud
-
-sudo chmod +x /etc/init.d/ecloud
-
-sudo service ecloud start
-
-sudo update-rc.d ecloud defaults
-
 su 
+
+cp ~/RBMaster/ecloud /etc/init.d/ecloud
+chmod +x /etc/init.d/ecloud
+service ecloud start
+update-rc.d ecloud defaults
 
 reboot
